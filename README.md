@@ -1,5 +1,17 @@
 # AWS-Route53
 
+## Overview
+- In AWS DNS is in the form of Route 53.
+- It is used to resolve domain names to IP addresses so request can retrieve the relevant service/application/information.
+- Typically in real world networks, we have a DNS server, which is able to carry out this function.
+- However, Route 53 is more advantageous integrates directly with AWS services and provides DNS management, domain registration, health checks, and multiple         routing policies.
+- Route 53 allows domain registration, so you don't have to purchase a domain off a third party platform
+  and also allows existing domains to be easily imported.
+- In addition, traditionally businesses would be required to find a hosting platform to host their application.
+- When using AWS Route 53, you don't have to worry about that as all the utilities/resources needed are on AWS itself.
+- There are also Hosted Zones, which allow you to add/update/edit DNS records.
+- Health checks are also synonymously carried out to ensure everything is operating normally.
+
 ## Architecture
 
 <img width="1100" height="607" alt="image" src="https://github.com/user-attachments/assets/97cd5cd4-cf9c-47d9-99e6-5cb04a434c54" />
@@ -39,14 +51,29 @@ This architecture is far more flexible and available than the first architecture
 - Gradually shifting traffic
 - Running applications in different environments/regions
 
-## Description
-- In AWS DNS is in the form of Route 53.
-- It is used to resolve domain names to IP addresses so request can retrieve the relevant service/application/information.
-- Typically in real world networks, we have a DNS server, which is able to carry out this function.
-- However, Route 53 is more advantageous integrates directly with AWS services and provides DNS management, domain registration, health checks, and multiple         routing policies.
-- Route 53 allows domain registration, so you don't have to purchase a domain off a third party platform
-  and also allows existing domains to be easily imported.
-- In addition, traditionally businesses would be required to find a hosting platform to host their application.
-- When using AWS Route 53, you don't have to worry about that as all the utilities/resources needed are on AWS itself.
-- There are also Hosted Zones, which allow you to add/update/edit DNS records.
-- Health checks are also synonymously carried out to ensure everything is operating normally.
+## Failover Routing
+<img width="1121" height="607" alt="image" src="https://github.com/user-attachments/assets/bb6d11bc-4474-4a45-b917-cd5301c53e20" />
+
+In this architecture, the main concern/ priority is availability. Many organisations prioritise availability over anything else. This a simplistic layout on how organisations are able to achieve this in AWS through configurations in Route 53. As you can see there are only 2 instances. (each after a load balancer) In route 53 you configure a primary resource and a secondary resource. If the primary resource happens to go down or become unavailable, traffic is rerouted to the available resource to maintain availability. 
+
+##Traffic Flow
+
+                         Route 53
+                     Failover Routing
+                            │
+                       Health Check
+                            │
+                     ┌──────┴──────┐
+                     │             │
+                  PRIMARY       SECONDARY
+                     │             │
+                     ▼             ▼
+                   ALB-A         ALB-B
+                     │             │
+                   EC2s          EC2s
+## Advantages
+- High Availability
+- Removes single fault of failure
+- Automatic Failover
+- Reduced Downtime
+- Geographic Resilience
